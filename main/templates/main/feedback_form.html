@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Provide Feedback{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %} 
+<h2 style="font-size: 24px; text-align: center; margin-bottom: 20px;">Feedback Form</h2>
+
+<form method = 'post'>
+    {% csrf_token %} {{form|crispy}}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

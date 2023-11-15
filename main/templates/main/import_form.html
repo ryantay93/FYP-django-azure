@@ -1,0 +1,44 @@
+{% extends 'main/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Import Excel{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post" enctype="multipart/form-data" class="row g-3">
+        {% csrf_token %}
+        <legend class="mb-4">Import Excel Data</legend>
+        <div class="col-md-6">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="product" name="import_type" value="Product" checked="checked">
+                <label class="form-check-label" for="product">
+                    Product
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" id="review" name="import_type" value="Review">
+                <label class="form-check-label" for="review">
+                    Review
+                </label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label for="excel_file" class="form-label">Select Excel File</label>
+            <div class="input-group">
+                <input type="file" name="excel_file" id="excel_file" class="form-control">
+                <button type="button" class="btn btn-outline-secondary" onclick="clearFileInput()">Clear</button>
+            </div>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Import</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function clearFileInput() {
+        document.getElementById('excel_file').value = ''; // Clear the file input
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5 d-flex justify-content-between align-items-center">
+        <div class="text-left text-white">
+            <h1 class="display-4 fw-bolder" style="color: #89CFF0;">Welcome to BlueMoon</h1>
+            <p class="lead fw-normal text-white-50 mb-0">WORLDS BEST ELECTRONIC ONLINE STORE</p>
+            <div style="height: 50px;"></div>
+            <p class="lead fw-normal mb-0" style="color: white;">What Items Are You Looking For?</p>
+            <div style="height: 10px;"></div>
+            <div class="row">
+                    <form class="form-inline my-2 my-lg-0" method="get" action="{% url 'search_products' %}">
+                        <div class="input-group">
+                            <input class="form-control" type="text" name="q" placeholder="Search products" style="width: 300px;">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search" style="color: #89CFF0;"></i> <!-- Magnifying glass icon -->
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+        <div class="text-right text-white">
+            <img src="https://images.fineartamerica.com/images/artworkimages/medium/1/blue-moon-t-al-powell-photography-usa-transparent.png"
+              class="img-fluid" alt="Sample image" style="width: 350px;">
+        </div>
+    </div>
+</header>
+
+
+<section class="py-5" style="background-image: url('https://i.pinimg.com/originals/e5/82/ed/e582ed4bb3a25d97fb03ac52c578ad67.jpg');">
+    <div class="container px-4 px-lg-5 mt-5" style="background-image: url('https://i.pinimg.com/originals/e5/82/ed/e582ed4bb3a25d97fb03ac52c578ad67.jpg');">
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for product in products %}
+            <div class="col">
+                <a href="{% url 'product_detail' product.product_id %}" style = "text-decoration:none;">
+                    <div class="card h-100" style="background-color: black; border: 3px solid #89CFF0;">
+                        <img src="{{ product.image }}" class="card-img-top" alt="{% if product.image %}{{ product.name }}{% else %}No Image Available{% endif %}">
+                        <div class="card-body" style="color: white;">
+                            <div class="text-center">
+                                <h5 class="card-title" style="margin-bottom: 50px;">{{ product.name }}</h5>
+                                <h6 class="card-text" style="margin-bottom: 50px;">${{ product.price }}</h6>
+                                <h6 class="card-text">Average Rating: {{ product.average_rating|default:"No reviews yet"|floatformat:1 }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <p>No product yet :(</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+    <!-- Pagination -->
+    <div style="text-align: center; background-image: url('https://i.pinimg.com/originals/e5/82/ed/e582ed4bb3a25d97fb03ac52c578ad67.jpg');">
+        <span style="display: inline-block;">
+            {% if products.has_previous %}
+                <a href="?q={{ request.GET.q }}&page=1" style="text-decoration: none; padding: 5px 10px; margin: 0 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #f8f8f8; color: #333;">&laquo; first</a>
+                <a href="?q={{ request.GET.q }}&page={{ products.previous_page_number }}" style="text-decoration: none; padding: 5px 10px; margin: 0 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #f8f8f8; color: #333;">previous</a>
+            {% endif %}
+    
+            <span style="font-weight: bold; background-color: #007bff; color: #fff; text-decoration: none; padding: 5px 10px; margin: 0 5px; border: 1px solid #007bff; border-radius: 4px;">{{ products.number }}</span>
+    
+            {% if products.has_next %}
+                <a href="?q={{ request.GET.q }}&page={{ products.next_page_number }}" style="text-decoration: none; padding: 5px 10px; margin: 0 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #f8f8f8; color: #333;">next</a>
+                <a href="?q={{ request.GET.q }}&page={{ products.paginator.num_pages }}" style="text-decoration: none; padding: 5px 10px; margin: 0 5px; border: 1px solid #ccc; border-radius: 4px; background-color: #f8f8f8; color: #333;">last &raquo;</a>
+            {% endif %}
+        </span>
+
+    </div>
+    
+
+{% endblock %}

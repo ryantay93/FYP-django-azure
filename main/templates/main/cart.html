@@ -1,0 +1,227 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Your Cart{% endblock %}
+
+{% block content %} 
+
+<style>
+  .shoppingCart {
+      width: 700px;
+      height: 500px;
+      padding: 20px 20px 20px 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between !important;
+      flex-direction: column;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      margin: auto;
+      margin-top: 20px;
+  }
+
+  .shoppingCart p {
+      font-size: 20px;
+  }
+
+  .shoppingCart .heading {
+      width: 100%;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      background-color: #6050DC;
+      border-radius: 5px;
+      color: white;
+      margin-top: 10px;
+  }
+
+  .shoppingCart .name,
+  .p_name {
+      width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .shoppingCart .p_name {
+      width: 350px;
+  }
+
+  .shoppingCart .itemContainer {
+      width: 100%;
+      height: 300px;
+      overflow-y: auto;
+      margin-top: 10px;
+  }
+
+  .shoppingCart .item {
+      width: 100%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 2px solid #6050DC;
+      margin-bottom: 10px;
+      padding: 10px;
+  }
+
+  .shoppingCart .item .iteminfo {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      width: 350px;
+  }
+
+  .shoppingCart .item .iteminfo .p_img {
+      width: 50px;
+      height: 50px;
+  }
+
+  .p_img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+  }
+
+  .shoppingCart button {
+      padding: 10px 10px 10px 10px;
+      border-radius: 10px;
+      background-color: #6050DC;
+      color: white;
+      width: 100px;
+      border: none;
+      cursor: pointer;
+  }
+
+  .remove-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      margin-left: 10px; /* Adjust margin as needed */
+  }
+
+  .remove-button button {
+      padding: 5px;
+      border-radius: 50%;
+      background-color: #ff0000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+  }
+
+  .shoppingCart .pay-section {
+      width: 100%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-top: 10px;
+
+    }
+
+    .shoppingCart .item .iteminfo .p_img a,
+    .shoppingCart .item .iteminfo p a {
+        text-decoration: none; /* Remove default underline for links */
+        color: inherit; /* Inherit the color from the parent */
+        display: flex;
+        align-items: center;
+    }
+
+    .shoppingCart .item .iteminfo .p_img a:hover,
+    .shoppingCart .item .iteminfo p a:hover {
+        text-decoration: underline; /* Add underline on hover */
+    }
+  
+</style>
+<div class="shoppingCart">
+  
+  <h2>My Cart</h2>
+
+  <div class="heading">
+    <div class="p_name"><h4>Product's Name</h4></div>
+    <div class="name"><h4>Quantity</h4></div>
+    <div class="name"><h4>Unit Price</h4></div>
+    <div class="name"><h4>Price</h4></div>
+  </div>
+
+  <div class="itemContainer">
+
+    {% for item in items %}
+    <div class="item">
+      <div class="iteminfo">
+        <div class="p_img">
+          <img src="{{item.product.image}}" alt="" />
+        </div>
+        <p>            
+          <a href="{% url 'product_detail' item.product.product_id %}">
+            {{ item.product.name }}
+          </a>
+        </p>
+      </div>
+      <div class="name"><p>{{item.quantity}}</p></div>
+      <div class="name"><p>${{item.product.price}}</p></div>
+      <div class="name"><p>${{item.price}}</p></div>
+        <!-- Cross button to remove the item -->
+      <div class="remove-button">
+          <button onclick="removeItem('{{ item.product.product_id }}')">X</button>
+      </div>
+    </div>
+    <div class="pay-section">
+      <h3>Grand-Total: ${{cart.total_price}}</h3>
+      <button onclick = redirectToCheckout() >Pay</button>
+    </div>
+    {% empty %}
+    <p>Oops, your shopping cart is empty</p>
+    {% endfor %}
+
+  </div>
+  <button class="clear-cart-button" onclick="clearCart()">Clear Cart</button>
+
+
+</div>
+
+
+<script>
+  
+  function removeItem(productId) {
+      // You may want to confirm with the user before removing the item
+      if (confirm('Are you sure you want to remove this item from your cart?')) {
+          // Redirect to the remove_from_cart view with the product ID
+          window.location.href = `/remove_from_cart/${productId}/`;
+      }
+  }
+
+  function redirectToCheckout() {
+    // Get the total price
+    var totalPrice = {{ cart.total_price }};
+    // Redirect to the checkout page
+    window.location.href = `{% url 'checkout' %}?total_price=${totalPrice}`;
+  }
+
+  function clearCart() {
+      if (confirm('Are you sure you want to clear your entire cart?')) {
+          window.location.href = "/clear_cart/";
+      }
+  }
+
+      // Function to toggle visibility of the "Clear Cart" button
+      function toggleClearCartButton() {
+        var clearCartButton = document.querySelector('.clear-cart-button');
+
+        // Check if the cart is empty
+        var isCartEmpty = {{ items|length }} === 0;
+
+        // Toggle the button's display property based on cart emptiness
+        clearCartButton.style.display = isCartEmpty ? 'none' : 'block';
+    }
+
+    // Call the function when the page loads
+    window.onload = toggleClearCartButton;
+
+</script>
+
+
+{% endblock %}

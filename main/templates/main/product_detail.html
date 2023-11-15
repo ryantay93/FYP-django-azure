@@ -1,0 +1,157 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Product Page{% endblock %}
+
+{% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+
+<!-- detail.html -->
+<br>
+<div class="container-fluid bg-light">
+<div class="media">
+    
+    <div class="product-image">
+        <br>
+        {% if product.image %}
+    <img class="align-self-start mr-3" src="{{ product.image }}" alt="{{ product.name }}" style="max-width: 300px; max-height: 300px;">
+    {% else %}
+        <p>No Image Available</p>
+    {% endif %}
+</div>
+
+
+    <div class="media-body">
+      
+      <h3>{{ product.name }}</h3>
+
+      
+
+<h2 class="font-weight-normal text-success"> ${{ product.price }} </h2>
+
+{% if user.account == 'B' %}
+
+<a class="btn btn-primary btn-lg float-right mr-md-5" href="{% url 'add_to_cart' product.product_id%}" role="button">Add to cart</a>
+
+{% endif %}
+
+<p>Sold by: <a class="font-weight-bold" href="{% url 'seller_store' seller.username %}">{{ seller.username }}</a></p>
+
+<p>Sold: {{ product.sold_count }}</p>
+
+
+<p>Average Rating: {{ average_rating|default:"No ratings yet"|floatformat:1  }}</p>
+
+
+<div class="rating-stars">
+    {% if average_rating %}
+        {% with avg_rating=average_rating|floatformat:1 %}
+        {% for i in "12345" %}
+            {% if i <= avg_rating %}
+                <i class="fas fa-star" style="color: gold;"></i>  <!-- Solid gold star icon -->
+            {% else %}
+                <i class="far fa-star"></i>  <!-- Outline star icon from Font Awesome -->
+            {% endif %}
+        {% endfor %}
+        {% endwith %}
+    {% else %}
+        <p>No ratings yet</p>
+    {% endif %}
+</div>
+<p><small>{{ total_ratings|default:"No ratings yet" }} ratings</small></p>
+
+
+
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Product description
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="container">
+            <p> {{ product.description }} </p>
+        </div>
+        </div>
+      </div>
+
+    </div>
+
+    
+  </div>
+
+  <br>
+</div>
+<br>
+
+
+  <div class="accordion" id="accordionExample">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+            
+          <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <div class="fw-light">Ratings and Reviews</div>
+          </button>
+        
+        </h5>
+      </div>
+
+
+      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="card-body">
+            <ul>
+                {% for review in reviews %}
+                <div class="review" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
+                    <div class="rating">
+                        <strong>Rating:</strong> {{ review.rating }}
+
+                
+
+                    </div>
+                    <div class="comment">
+                        <strong>Comment:</strong> {{ review.comment }}
+                    </div>
+                    <div class="username">
+                        <strong>Username:</strong> {{ review.username.username }}
+                    </div>
+                    <!-- You can add additional information from the review model here -->
+                </div>
+                {% empty %}
+                <p> No review and rating yet :(</p>
+                {% endfor %}
+            </ul>
+
+            <div class="row justify-content-center">
+                <div class="col-auto">
+                    <span style="display: inline-block;">
+                        {% if reviews.has_previous %}
+                            <a href="?page=1" class="btn btn-outline-secondary">First</a>
+                            <a href="?page={{ reviews.previous_page_number }}" class="btn btn-outline-secondary">Previous</a>
+                        {% endif %}
+            
+                        <span style="font-weight: bold; background-color: #0405176f; color: #fff; text-decoration: none; padding: 5px 10px; margin: 0 5px; border: 1px solid #007bff; border-radius: 4px;">{{ reviews.number }}</span>
+            
+                        {% if reviews.has_next %}
+                            <a href="?page={{ reviews.next_page_number }}" class="btn btn-outline-secondary">Next</a>
+                            <a href="?page={{ reviews.paginator.num_pages }}" class="btn btn-outline-secondary">Last</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+      </div>
+
+
+      
+    </div>
+    
+    
+  </div>
+
+{% endblock %}
+
+
+

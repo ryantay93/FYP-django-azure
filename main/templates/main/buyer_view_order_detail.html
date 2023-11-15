@@ -1,0 +1,123 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+
+<h2>Order Detail</h2>
+
+<p>Order ID: {{ order.order_id }}</p>
+<p>Order Status: {{ order.order_status }}</p>
+<p>Order Created Time: {{ order.order_created_time }}</p>
+<p>Total Price: ${{ order.total_price }}</p>
+<p>Number of Items: {{ order.num_of_items }}</p>
+<p>Delivery Address: {{ order.delivery_address }}</p>
+<hr>
+
+
+{% if order_items %}
+    <h3>Order Items</h3>
+    <!-- Filter buttons -->
+    <div id="filter-buttons">
+        <button onclick="filterOrders('all')">All Orders</button>
+        <button onclick="filterOrders('to_ship')">To Ship</button>
+        <button onclick="filterOrders('to_receive')">To Receive</button>
+        <button onclick="filterOrders('delivered')">Delivered</button>
+    </div>
+    <ul>
+        {% for order_item in order_items %}
+            <li class="order-item {% if item.order_status == 'To Ship' %}to-ship{% elif item.order_status == 'To Receive' %}to-receive{% elif item.order_status == 'Delivered' %}delivered{% endif %}">
+                <a href="{% url 'product_detail' order_item.product.product_id %}">{{ order_item.product.name }}</a>
+                <br>
+                {% if order_item.product.image %}
+                <img src="{{ order_item.product.image }}" alt="{{ order_item.product.name }}" style="max-width: 300px; max-height: 300px;">
+                {% else %}
+                <p>No Image Available</p>
+                {% endif %}
+                <br>
+                <p>Sold by: <a href="{% url 'seller_store' order_item.product.seller %}">{{ order_item.product.seller }}</a></p>
+                Quantity: {{ order_item.quantity }}<br>
+                Price: ${{ order_item.price }}<br>
+                Shipping Status: {{ order_item.order_status }}<br>
+
+
+                {% if order_item.order_status != "Delivered" %}
+                <form method="post" action="{% url 'mark_received' order_item.order %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ order_item.product.product_id }}">
+
+                    <p><strong>Please ensure you have really obtained the product before you click the button below!!!</strong></p>
+                    <button type="submit">I received this product</button>
+                </form>
+                {% else %}
+                    {% for product_info_item in product_info %}
+                        {% if product_info_item.product_id == order_item.product.product_id %}
+                            {% if product_info_item.has_bought %}
+                                {% if not product_info_item.has_rated %}    
+                                <h2>Add a Review</h2>
+                                <form method="post" action="{% url 'save_review' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ order_item.product.product_id }}">
+                                    
+                                    <label for="rating">Rating:</label>
+                                    <select name="rating" id="rating">
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <br>
+                                    <label for="review_comment">Review Comment:</label>
+                                    <textarea name="review_comment" id="review_comment" rows="4" cols="50"></textarea>
+                            
+                                    {{ form.as_p }}
+                                    <button type="submit">Submit Review</button>
+                                </form>
+
+                                {% else %}
+                                <p> You have rated this product!</p>
+                                {% endif %}
+                            {% endif %}
+
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No items found for this order.</p>
+{% endif %}
+<p id="no-orders-message" style="display: none;">No items found for the selected category.</p>
+
+<a href="{% url 'buyer_view_orders' %}">Back to Your Orders</a>
+
+
+<script>
+    function filterOrders(status) {
+    var orderItems = document.getElementsByClassName('order-item');
+
+    for (var i = 0; i < orderItems.length; i++) {
+        var orderItem = orderItems[i];
+        var itemStatus = orderItem.classList.contains('to-ship') ? 'to_ship' : (orderItem.classList.contains('to-receive') ? 'to_receive' : 'delivered');
+
+        if (status === 'all' || itemStatus === status) {
+            orderItem.style.display = 'block';
+        } else {
+            orderItem.style.display = 'none';
+        }
+    }
+
+    // Show message when there are no orders for the selected category
+    var noOrdersMessage = document.getElementById('no-orders-message');
+    if (noOrdersMessage) {
+        var visibleOrders = Array.from(orderItems).filter(item => item.style.display === 'block');
+        noOrdersMessage.style.display = visibleOrders.length > 0 ? 'none' : 'block';
+    }
+}
+</script>
+
+
+{% endblock %}

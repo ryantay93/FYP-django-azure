@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}My Products{% endblock %}
+
+{% block content %}
+<h2>Your Products</h2>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+  {% for product in products %}
+  <div class="col">
+    <a href="{% url 'product_detail' product.product_id %}" style="text-decoration: none;">
+      <div class="card h-100">
+        <img src="{{ product.image }}" class="card-img-top" alt="{% if product.image %}{{ product.name }}{% else %}No Image Available{% endif %}">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">${{ product.price }}</p>
+          <p class="card-text">Average Rating: {{ product.average_rating|default:"No reviews yet"|floatformat:1 }}</p>
+          
+          {% if user == product.seller %}
+            <a href="{% url 'edit_product' product.product_id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'delete_product' product.product_id %}" class="btn btn-danger">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </a>
+  </div>
+  {% empty %}
+  <p>No product yet :(</p>
+  {% endfor %}
+</div>
+
+{% endblock %}

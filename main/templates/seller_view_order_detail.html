@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Order Detail{% endblock %}
+
+{% block content %}
+
+<h2>Order Detail</h2>
+
+<p>Order ID: {{ order.order_id }}</p>
+<p>Order Status: {{ order.order_status }}</p>
+<p>Order Created Time: {{ order.order_created_time }}</p>
+<p>Total Price: ${{ order.total_price }}</p>
+<p>Number of Items: {{ order.num_of_items }}</p>
+
+<hr>
+
+{% if order_items %}
+    <h3>Order Items</h3>
+    <ul>
+        {% for order_item in order_items %}
+            <li>
+                <a href="{% url 'product_detail' order_item.product.product_id %}">{{ order_item.product.name }}</a>
+                <br>
+                {% if order_item.product.image %}
+                <img src="{{ order_item.product.image }}" alt="{{ order_item.product.name }}" style="max-width: 300px; max-height: 300px;">
+                {% else %}
+                <p>No Image Available</p>
+                {% endif %}
+                <br>
+                <p>Sold by: <a href="{% url 'seller_store' order_item.product.seller %}">{{ order_item.product.seller }}</a></p>
+                Quantity: {{ order_item.quantity }}<br>
+                Price: ${{ order_item.price }}<br>
+            </li>
+            <hr>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No items found for this order.</p>
+{% endif %}
+
+<a href="{% url 'buyer_view_orders' %}">Back to Your Orders</a>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Delete Product Success{% endblock %}
+
+{% block content %}
+    <div class="alert alert-success" role="alert">
+        Product has been successfully deleted!
+    </div>
+    <a href="{% url 'seller_products' %}" class="btn btn-primary">Back to My Products</a>
+{% endblock %}

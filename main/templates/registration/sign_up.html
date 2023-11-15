@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %} 
+
+<style>
+    .form-text.custom-help-text {
+        color: whitesmoke;  /* Set the desired font color for custom help text */
+        
+    }
+    #div_id_password1 .form-text {
+        color: whitesmoke;  /* Set the desired font color for custom help text */
+    }
+</style>
+
+<section class="h-100 h-custom" style="background-image: url('https://i.pinimg.com/originals/e5/82/ed/e582ed4bb3a25d97fb03ac52c578ad67.jpg');">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-8 col-xl-6">
+          <div class="card rounded-3" style="background-color: black; border: 2px solid #89CFF0;">
+            <img src="https://cdn.pixabay.com/photo/2017/02/05/23/32/moon-2041738_1280.jpg"
+              class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem; height:300px; width:100px;"
+              alt="Sample photo">
+            <div class="card-body p-4 p-md-5">
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2" style = "color:#89CFF0">Registration</h3>
+  
+              <form method = 'post' class="px-md-2" >
+                {% include 'main/includes/messaging.html' %}
+                {% csrf_token %} 
+                <div style="color: #89CFF0;">{{ form|crispy }}</div>
+
+                <p style = "color:crimson">* fields are mandatory</p>
+                <p style="color: #89CFF0;">Already have an account? <a href="/login" style="color: white;">Login here</a></p>
+                <button type="submit" class="btn btn-primary btn-lg mb-1">Register</button>
+  
+              </form>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+{% endblock %}

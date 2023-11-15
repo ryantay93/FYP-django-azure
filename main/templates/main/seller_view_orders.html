@@ -1,0 +1,112 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Customers' Orders{% endblock %}
+
+{% block content %}
+
+{% include 'main/includes/messaging.html' %} 
+
+<h2>Your Customers' Orders (Latest on Top)</h2>
+
+<!-- Filter buttons -->
+<div id="filter-buttons">
+    <button onclick="filterOrders('all')">All Orders</button>
+    <button onclick="filterOrders('to_ship')">To Ship</button>
+    <button onclick="filterOrders('to_receive')">To Receive</button>
+    <button onclick="filterOrders('delivered')">Delivered</button>
+</div>
+
+{% if order_items %}
+    <ul>
+        {% for item in order_items %}
+            <li class="order-item {% if item.order_status == 'To Ship' %}to-ship{% elif item.order_status == 'To Receive' %}to-receive{% elif item.order_status == 'Delivered' %}delivered{% endif %}">
+            Order ID: {{ item.order.order_id }}<br>
+                <br>
+                {% if item.product.image %}
+                <img src="{{ item.product.image }}" alt="{{ item.product.name }}" style="max-width: 300px; max-height: 300px;">
+                {% else %}
+                <p>No Image Available</p>
+                {% endif %}
+                <br>
+
+                Product: <a href="{% url 'product_detail' item.product.product_id %}">{{ item.product.name }}</a> <br>
+                Quantity: {{ item.quantity }}    <br>       
+                Total Price: ${{ item.price }}<br>
+                <p>Purchased by: {{ item.order.buyer }} on {{ item.order.order_created_time }} </p>
+                <p>Buyer's Address: {{ item.order.delivery_address }}</p>
+                <p>Shipping Status: {{ item.order_status }}</p>
+
+                <!-- Button to toggle the form visibility -->
+                <button onclick="toggleForm('{{ item.order.order_id }}', '{{ item.product.product_id }}')">Update Shipping Status</button>
+                
+                <!-- Form to update shipping status (initially hidden) -->
+                <form id="form_{{ item.order.order_id }}_{{ item.product.product_id }}" method="post" action="{% url 'update_shipping_status' item.order.order_id %}" style="display: none;">
+                    {% csrf_token %}
+                    <input type="hidden" name="product_id" value="{{ item.product.product_id }}">
+
+                    <label for="shipping_status">Update Shipping Status:</label>
+                    <select name="shipping_status" id="shipping_status_{{ item.order.order_id }}">
+                        <option value="To Ship" {% if item.order_status == 'To Ship' %}selected{% endif %}>To Ship</option>
+                        <option value="To Receive" {% if item.order_status == 'To Receive' %}selected{% endif %}>To Receive</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+                <hr>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No orders found.</p>
+{% endif %}
+
+<p id="no-orders-message" style="display: none;">No orders found for the selected category.</p>
+
+
+<script>
+// Object to keep track of form states
+var formStates = {};
+
+function toggleForm(orderId, productId) {
+    // Construct a unique form ID based on orderId and productId
+    var formId = 'form_' + orderId + '_' + productId;
+
+    // Get the form element by ID
+    var form = document.getElementById(formId);
+    
+    // Initialize state if not present
+    if (formStates[formId] === undefined) {
+        formStates[formId] = 'none';
+    }
+
+    // Toggle the display style of the form
+    form.style.display = (formStates[formId] === 'none') ? 'block' : 'none';
+
+    // Update the state
+    formStates[formId] = form.style.display;
+}
+
+function filterOrders(status) {
+    var orderItems = document.getElementsByClassName('order-item');
+
+    for (var i = 0; i < orderItems.length; i++) {
+        var orderItem = orderItems[i];
+        var itemStatus = orderItem.classList.contains('to-ship') ? 'to_ship' : (orderItem.classList.contains('to-receive') ? 'to_receive' : 'delivered');
+
+        if (status === 'all' || itemStatus === status) {
+            orderItem.style.display = 'block';
+        } else {
+            orderItem.style.display = 'none';
+        }
+    }
+
+    // Show message when there are no orders for the selected category
+    var noOrdersMessage = document.getElementById('no-orders-message');
+    if (noOrdersMessage) {
+        var visibleOrders = Array.from(orderItems).filter(item => item.style.display === 'block');
+        noOrdersMessage.style.display = visibleOrders.length > 0 ? 'none' : 'block';
+    }
+}
+
+</script>
+
+{% endblock %}

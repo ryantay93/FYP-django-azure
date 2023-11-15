@@ -1,0 +1,10 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Edit Product Success{% endblock %}
+
+{% block content %}
+    <div class="alert alert-success" role="alert">
+        Product has been successfully edited!
+    </div>
+    <a href="{% url 'seller_products' %}" class="btn btn-primary">Back to My Products</a>
+{% endblock %}

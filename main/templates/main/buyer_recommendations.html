@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Seller's Store{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Seller's Store</h1>
+    <h2>{{ seller.username }}</h2>
+
+    <h3>Products for Sale:</h3>
+    
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+    {% for product in products %}
+    <div class="col">
+        <a href="{% url 'product_detail' product.product_id %}" style = "text-decoration:none;">
+            <div class="card h-100">
+                <img src="{{ product.image }}" class="card-img-top" alt="{% if product.image %}{{ product.name }}{% else %}No Image Available{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">${{ product.price }}</p>
+                    <p class="card-text">Average Rating: {{ product.average_rating|default:"No reviews yet"|floatformat:1 }}</p>
+                </div>
+            </div>
+        </a>
+    </div>
+    {% empty %}
+    <p>No products currently available in this store.</p>
+    {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

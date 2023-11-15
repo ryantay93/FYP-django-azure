@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+{% load recommender_tags %}
+
+{% block title %}Recommendations{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %} 
+<p>{% buyer_recommendations_tag as some_text %}</p>
+{{some_text}}
+{% endblock %}

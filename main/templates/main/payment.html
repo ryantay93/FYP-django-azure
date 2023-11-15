@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Payment{% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <h1>Payment</h1>
+  <!-- Display the total price -->
+  <p>You need to pay: ${{ total_price }}</p>
+
+  <form id="paymentForm" method="post" action="{% url 'checkout' %}">
+    {% csrf_token %} {{form|crispy}}
+    <input type="hidden" name="total_price" value="{{ total_price }}">
+    <label for="card_number">Card Number:</label>
+    <input type="text" id="card_number" name="card_number" placeholder="Card Number" required>
+
+    <label for="expiration_date">Expiration Date (MM/YY):</label>
+    <input type="text" id="expiration_date" name="expiration_date" placeholder="MM/YY" required>
+
+    <label for="cvv">CVV:</label>
+    <input type="text" id="cvv" name="cvv" placeholder="CVV" required>
+    <br>
+    <label for="address">Deliver Product to:</label>
+    <textarea id="address" name="address" placeholder="Example:
+    101 Marlow Street
+    #12-05 Clife Parkview
+    Singapore 059020" style="width: 400px; height: 150px;" required></textarea>
+
+    <!-- Button to use default address -->
+    <button type="button" onclick="useDefaultAddress()">Use My Default Address</button>
+
+    <br>
+    <button type="submit" class="btn btn-primary">Submit Payment</button>
+
+    <!-- Button to clear the form -->
+    <button type="button" onclick="clearForm()">Clear</button>
+
+     <!-- Hidden input field for the address (DO NOT REMOVE THIS)-->
+     <input type="hidden" id="hiddenAddress" name="hiddenAddress" value="">
+  </form>
+
+  <script>
+    function useDefaultAddress() {
+      // Get the default address and set it to the textarea
+      var defaultAddress = "{{ user.address }}";
+      document.getElementById('address').value = defaultAddress;
+      document.getElementById('hiddenAddress').value = defaultAddress;
+
+    }
+
+    function clearForm() {
+      // Clear all input fields in the form
+      document.getElementById('paymentForm').reset();
+      // Clear the value of the hidden input field
+      document.getElementById('hiddenAddress').value = '';
+    }
+  </script>
+
+{% endblock %}
