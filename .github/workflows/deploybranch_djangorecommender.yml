@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'djangorecommender'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2DB41AA83C734E85BB7DEC9A22AE2FB4 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_71C7B3988C2A48CD9487BE38644917F8 }}
