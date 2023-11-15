@@ -711,7 +711,7 @@ def seller_create_report(request):
         # print(top_prodrev_keywords(top_n_products))
         
         # Generating report file...
-        rptfile = open("report.txt", "w", encoding="utf-8")
+        rptfile = open("./report.txt", "w", encoding="utf-8")
         rptfile.write("Top {0} Products\n".format(n))
         rptfile.write(str(top_n_products) + "\n") # Did not use to_string as some product names are so long it blocks the values
         rptfile.write("\nTop {0} Reviewers\n".format(m))
@@ -741,7 +741,7 @@ def seller_create_report(request):
 @login_required(login_url="/login")
 @user_passes_test(is_seller, login_url="/home")
 def seller_download_report(request):
-    response = FileResponse(open("report.txt", "rb"))
+    response = FileResponse(open("./report.txt", "rb"))
     return response
 
 @login_required(login_url="/login")
