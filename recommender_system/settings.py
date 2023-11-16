@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+#hfwnwz0f5v16qfj+3ty!lyogb#y69oo#55j+--k0_jt#4^7o
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -134,8 +134,6 @@ LOGOUT_REDIRECT_URL = '/login'
 
 AUTH_USER_MODEL = 'main.CustomUser'  
 
-
 RECAPTCHA_PUBLIC_KEY = '6LfZuAQpAAAAAIMHsEDkPC5oISzffq5aNygIR8Kf'
 RECAPTCHA_PRIVATE_KEY = '6LfZuAQpAAAAALWWG5TqzeUqO_m9Ci6WJCnbXIvo'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
-CSRF_TRUSTED_ORIGINS = ['https://bluemoon.azurewebsites.net']
