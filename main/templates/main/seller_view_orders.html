@@ -6,14 +6,25 @@
 
 {% include 'main/includes/messaging.html' %} 
 
-<h2>Your Customers' Orders (Latest on Top)</h2>
+<br>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+  <div class="mx-auto bg-light" style="width: 700px;">
+    <br>
+
+    <div class="container">
+<h2 style="font-size: 24px; text-align: center; margin-bottom: 20px;">Your Customers' Orders (Latest on Top)</h2>
 
 <!-- Filter buttons -->
 <div id="filter-buttons">
-    <button onclick="filterOrders('all')">All Orders</button>
-    <button onclick="filterOrders('to_ship')">To Ship</button>
-    <button onclick="filterOrders('to_receive')">To Receive</button>
-    <button onclick="filterOrders('delivered')">Delivered</button>
+    <ul class="justify-content-center">
+    <button class="btn btn-primary" onclick="filterOrders('all')">All Orders</button>
+    <button class="btn btn-primary" onclick="filterOrders('to_ship')">To Ship</button>
+    <button class="btn btn-primary" onclick="filterOrders('to_receive')">To Receive</button>
+    <button class="btn btn-primary" onclick="filterOrders('delivered')">Delivered</button>
+</ul>
 </div>
 
 {% if order_items %}
@@ -108,5 +119,9 @@ function filterOrders(status) {
 }
 
 </script>
+</div>
+<br>
+</div>
+<br>
 
 {% endblock %}

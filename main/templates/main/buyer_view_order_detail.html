@@ -4,7 +4,17 @@
 
 {% block content %}
 
-<h2>Order Detail</h2>
+
+<br>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+  <div class="mx-auto bg-light" style="width: 700px;">
+    <br>
+    <div class="container">
+
+        <h2 style="font-size: 24px; text-align: center; margin-bottom: 20px;">Order Detail</h2>
 
 <p>Order ID: {{ order.order_id }}</p>
 <p>Order Status: {{ order.order_status }}</p>
@@ -19,11 +29,12 @@
     <h3>Order Items</h3>
     <!-- Filter buttons -->
     <div id="filter-buttons">
-        <button onclick="filterOrders('all')">All Orders</button>
-        <button onclick="filterOrders('to_ship')">To Ship</button>
-        <button onclick="filterOrders('to_receive')">To Receive</button>
-        <button onclick="filterOrders('delivered')">Delivered</button>
+        <button class="btn btn-primary" onclick="filterOrders('all')">All Orders</button>
+        <button class="btn btn-primary" onclick="filterOrders('to_ship')">To Ship</button>
+        <button class="btn btn-primary" onclick="filterOrders('to_receive')">To Receive</button>
+        <button class="btn btn-primary" onclick="filterOrders('delivered')">Delivered</button>
     </div>
+    <br>
     <ul>
         {% for order_item in order_items %}
             <li class="order-item {% if item.order_status == 'To Ship' %}to-ship{% elif item.order_status == 'To Receive' %}to-receive{% elif item.order_status == 'Delivered' %}delivered{% endif %}">
@@ -47,13 +58,16 @@
                     <input type="hidden" name="product_id" value="{{ order_item.product.product_id }}">
 
                     <p><strong>Please ensure you have really obtained the product before you click the button below!!!</strong></p>
-                    <button type="submit">I received this product</button>
+                    <button class="btn btn-success" type="submit">I received this product</button>
                 </form>
                 {% else %}
                     {% for product_info_item in product_info %}
                         {% if product_info_item.product_id == order_item.product.product_id %}
                             {% if product_info_item.has_bought %}
-                                {% if not product_info_item.has_rated %}    
+                                {% if not product_info_item.has_rated %}   
+                                
+                                <div class="mx-justify form-group" style="width: 600px;">
+                                    <br>
                                 <h2>Add a Review</h2>
                                 <form method="post" action="{% url 'save_review' %}">
                                     {% csrf_token %}
@@ -72,9 +86,11 @@
                                     <textarea name="review_comment" id="review_comment" rows="4" cols="50"></textarea>
                             
                                     {{ form.as_p }}
-                                    <button type="submit">Submit Review</button>
+                                    
+                                    <button class="btn btn-success" type="submit">Submit Review</button>
                                 </form>
-
+                                <br>
+                            </div> 
                                 {% else %}
                                 <p> You have rated this product!</p>
                                 {% endif %}
@@ -118,6 +134,9 @@
     }
 }
 </script>
-
+</div>
+<br>
+</div>
+<br>
 
 {% endblock %}

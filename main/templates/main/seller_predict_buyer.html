@@ -5,39 +5,65 @@
 {% block title %}Test Accuracy{% endblock %}
 
 {% block content %}
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+  <br>
+  <div class="mx-auto bg-light" style="width: 700px;">
+    
+<br>
+
+
+<form method = 'post'>
+        <div class="mx-auto form-group" style="width: 600px;">
+
 <div class="container">
     <form method="post" enctype="multipart/form-data" class="row g-3">
         {% csrf_token %}
         <legend class="mb-4">Predict Buyer Product Ratings</legend>
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div>
                 <label for="username">
                     Target Customer's Username
                 </label>
-                <input type="text" id="username" name="username" value="">
+                <input class="form-control form-control-lg" type="text" id="username" name="username" value="">
             </div>
+<br>
             <div>
                 <label for="similarity_thresh">
                     Similarity Threshold (0 to 1)
                 </label>
-                <input type="number" step="0.01" min="0" id="similarity_thresh" name="similarity_thresh" value="0.3">
+                <input class="form-control form-control-lg" type="number" id="similarity_thresh" name="similarity_thresh" value="0.3">
             </div>
+<br>
             <div>
                 <label>
                     Top number of similar customers to consider
                 </label>
-                <input type="number" id="n" name="n" value="10">
+                <input class="form-control form-control-lg" type="number" id="n" name="n" value="10">
             </div>
+<br>
             <div>
                 <label>
                     Maximum number of products to recommend
                 </label>
-                <input type="number" id="m" name="m" value="10">
+                <input class="form-control form-control-lg" type="number" id="m" name="m" value="10">
             </div>
         </div>
+<br>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Test</button>
         </div>
     </form>
 </div>
+
+</div>
+</form>
+<br>
+</div>
+<br>
+
+
 {% endblock %}

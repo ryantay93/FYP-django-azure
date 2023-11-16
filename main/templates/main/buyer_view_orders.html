@@ -4,15 +4,25 @@
 
 {% block content %}
 
-<h2>Your Orders (Latest on Top)</h2>
+<br>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+  <div class="mx-auto bg-light" style="width: 700px;">
+    <br>
+    <div class="container">
+    
+<h2 style="font-size: 24px; text-align: center; margin-bottom: 20px;">Your Customers' Orders (Latest on Top)</h2>
 
 {% if orders %}
     <!-- Filter buttons -->
     <div id="filter-buttons">
-        <button onclick="filterOrders('all')">All Orders</button>
-        <button onclick="filterOrders('completed')">Completed</button>
-        <button onclick="filterOrders('not-completed')">Yet to be completed</button>
+        <button class="btn btn-primary" onclick="filterOrders('all')">All Orders</button>
+        <button class="btn btn-primary" onclick="filterOrders('completed')">Completed</button>
+        <button class="btn btn-primary" onclick="filterOrders('not-completed')">Yet to be completed</button>
     </div>
+    <br>
     <ul>
         {% for order in orders %}
             <li class="order {% if order.order_status == 'Completed' %}completed{% elif order.order_status == 'Yet to be completed' %}not-completed{% endif %}">
@@ -58,5 +68,9 @@
     }
 }
 </script>
+</div>
+<br>
+</div>
+<br>
 
 {% endblock %}

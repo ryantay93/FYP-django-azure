@@ -3,6 +3,15 @@
 {% block title %}My Products{% endblock %}
 
 {% block content %}
+
+<br>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+  <div class="mx-auto" style="width: 1300px;">
+    <br>
+
 <h2>Your Products</h2>
 <div class="row row-cols-1 row-cols-md-4 g-4">
   {% for product in products %}
@@ -14,7 +23,7 @@
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">${{ product.price }}</p>
           <p class="card-text">Average Rating: {{ product.average_rating|default:"No reviews yet"|floatformat:1 }}</p>
-          
+          <br>
           {% if user == product.seller %}
             <a href="{% url 'edit_product' product.product_id %}" class="btn btn-primary">Edit</a>
             <a href="{% url 'delete_product' product.product_id %}" class="btn btn-danger">Delete</a>
@@ -28,4 +37,7 @@
   {% endfor %}
 </div>
 
+<br>
+</div>
+<br>
 {% endblock %}

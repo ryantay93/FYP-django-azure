@@ -3,36 +3,49 @@
 {% block title %}Payment{% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-  <h1>Payment</h1>
-  <!-- Display the total price -->
-  <p>You need to pay: ${{ total_price }}</p>
 
+<br>
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+  </head>
+  
+    <br>
+  <h1 style="font-size: 24px; text-align: center; margin-bottom: 20px;">Payment</h1>
+  <!-- Display the total price -->
+  
+
+  <div class="mx-auto form-group" style="width: 600px;">
+
+    <p>You need to pay: ${{ total_price }}</p>
   <form id="paymentForm" method="post" action="{% url 'checkout' %}">
     {% csrf_token %} {{form|crispy}}
     <input type="hidden" name="total_price" value="{{ total_price }}">
     <label for="card_number">Card Number:</label>
     <input type="text" id="card_number" name="card_number" placeholder="Card Number" required>
-
+<br>
     <label for="expiration_date">Expiration Date (MM/YY):</label>
     <input type="text" id="expiration_date" name="expiration_date" placeholder="MM/YY" required>
-
+<br>
     <label for="cvv">CVV:</label>
     <input type="text" id="cvv" name="cvv" placeholder="CVV" required>
     <br>
-    <label for="address">Deliver Product to:</label>
+    <label class="" for="address">Deliver Product to:</label>
+    <br>
     <textarea id="address" name="address" placeholder="Example:
     101 Marlow Street
     #12-05 Clife Parkview
     Singapore 059020" style="width: 400px; height: 150px;" required></textarea>
-
+<br>
+<br>
     <!-- Button to use default address -->
-    <button type="button" onclick="useDefaultAddress()">Use My Default Address</button>
-
+    <button type="button" class="btn btn-success" onclick="useDefaultAddress()">Use My Default Address</button>
+<br>
     <br>
     <button type="submit" class="btn btn-primary">Submit Payment</button>
 
     <!-- Button to clear the form -->
-    <button type="button" onclick="clearForm()">Clear</button>
+    <button type="button" class="btn btn-secondary" onclick="clearForm()">Clear</button>
 
      <!-- Hidden input field for the address (DO NOT REMOVE THIS)-->
      <input type="hidden" id="hiddenAddress" name="hiddenAddress" value="">
@@ -54,5 +67,8 @@
       document.getElementById('hiddenAddress').value = '';
     }
   </script>
-
+  </div>
+<br>
+</div>
+<br>
 {% endblock %}
