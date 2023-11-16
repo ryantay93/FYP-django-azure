@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'bluemoon'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A6EF95A64B1447C4B1E3B640B436FCFA }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3AC0464C2B7D410993EED86A512828A3 }}
