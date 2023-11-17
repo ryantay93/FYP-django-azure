@@ -33,15 +33,15 @@
 </header>
 
 
-<section class="py-5" style="background-image: url('https://i.pinimg.com/originals/e5/82/ed/e582ed4bb3a25d97fb03ac52c578ad67.jpg');">
-    <div class="container px-4 px-lg-5 mt-5" style="background-image: url('https://i.pinimg.com/originals/e5/82/ed/e582ed4bb3a25d97fb03ac52c578ad67.jpg');">
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
         <div class="row row-cols-1 row-cols-md-4 g-4">
             {% for product in products %}
             <div class="col">
                 <a href="{% url 'product_detail' product.product_id %}" style = "text-decoration:none;">
-                    <div class="card h-100" style="background-color: black; border: 3px solid #89CFF0;">
+                    <div class="card h-100" style="background-color: white; border: 3px solid black;">
                         <img src="{{ product.image }}" class="card-img-top" alt="{% if product.image %}{{ product.name }}{% else %}No Image Available{% endif %}">
-                        <div class="card-body" style="color: white;">
+                        <div class="card-body" style="color: black;">
                             <div class="text-center">
                                 <h5 class="card-title" style="margin-bottom: 50px;">{{ product.name }}</h5>
                                 <h6 class="card-text" style="margin-bottom: 50px;">${{ product.price }}</h6>
