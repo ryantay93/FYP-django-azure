@@ -169,14 +169,14 @@
           <button onclick="removeItem('{{ item.product.product_id }}')">X</button>
       </div>
     </div>
+
+    {% empty %}
+    <p>Oops, your shopping cart is empty</p>
+    {% endfor %}
     <div class="pay-section">
       <h3>Grand-Total: ${{cart.total_price}}</h3>
       <button onclick = redirectToCheckout() >Pay</button>
     </div>
-    {% empty %}
-    <p>Oops, your shopping cart is empty</p>
-    {% endfor %}
-
   </div>
   <button class="clear-cart-button" onclick="clearCart()">Clear Cart</button>
 
@@ -207,16 +207,19 @@
       }
   }
 
-      // Function to toggle visibility of the "Clear Cart" button
-      function toggleClearCartButton() {
-        var clearCartButton = document.querySelector('.clear-cart-button');
+  function toggleClearCartButton() {
+    var clearCartButton = document.querySelector('.clear-cart-button');
+    var paySection = document.querySelector('.pay-section');
 
-        // Check if the cart is empty
-        var isCartEmpty = {{ items|length }} === 0;
+    // Check if the cart is empty
+    var isCartEmpty = {{ items|length }} === 0;
 
-        // Toggle the button's display property based on cart emptiness
-        clearCartButton.style.display = isCartEmpty ? 'none' : 'block';
-    }
+    // Toggle the button's display property based on cart emptiness
+    clearCartButton.style.display = isCartEmpty ? 'none' : 'block';
+
+    // Toggle the "Pay" button and "Grand Total" section based on cart emptiness
+    paySection.style.display = isCartEmpty ? 'none' : 'flex';
+}
 
     // Call the function when the page loads
     window.onload = toggleClearCartButton;

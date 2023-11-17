@@ -37,7 +37,7 @@
     <br>
     <ul>
         {% for order_item in order_items %}
-            <li class="order-item {% if item.order_status == 'To Ship' %}to-ship{% elif item.order_status == 'To Receive' %}to-receive{% elif item.order_status == 'Delivered' %}delivered{% endif %}">
+            <li class="order-item {% if order_item.order_status == 'To Ship' %}to-ship{% elif order_item.order_status == 'To Receive' %}to-receive{% elif order_item.order_status == 'Delivered' %}delivered{% endif %}">
                 <a href="{% url 'product_detail' order_item.product.product_id %}">{{ order_item.product.name }}</a>
                 <br>
                 {% if order_item.product.image %}
