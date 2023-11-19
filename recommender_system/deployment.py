@@ -18,19 +18,22 @@ MIDDLEWARE = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.koin(BASE_DIR / "static")
+    os.path.join(BASE_DIR / "static")
 ]
 
-'''
 # Might need to pip install whitenoise for static files
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_ROOT = BASE_DIR / 'static'
 STORAGES = {
+    "default": {
+        "BACKEND" : "storages.backends.azure_storage.AzureStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
+'''
 # Might need to pip install python-dotenv for this part
 connection_string = os.environ['AZURE_POSTGRESQL_CONNECTIONSTRING']
 parameters = {pair.split('='):pair.split('=')[1] for pair in connection_string.split(' ')}
