@@ -1,6 +1,6 @@
 import os
 from .settings import *
-# from .settings import BASE_DIR
+from .settings import BASE_DIR
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ['WEBSITE_HOSTNAME']]
@@ -15,6 +15,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+STATICFILES_DIRS = [
+    os.path.koin(BASE_DIR / "static")
 ]
 
 '''
