@@ -1,6 +1,4 @@
 asgiref==3.7.2
-azure-core==1.29.5
-azure-storage-blob==12.19.0
 crispy-bootstrap5==0.7
 Django==4.2.6
 django-crispy-forms==2.1

@@ -24,14 +24,11 @@ STATICFILES_DIRS = [
 # Might need to pip install whitenoise for static files
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_ROOT = BASE_DIR / 'static'
-STORAGES = {
-    "default": {
-        "BACKEND" : "storages.backends.azure_storage.AzureStorage",
-    },
-    # "staticfiles": {
-    #     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    # },
-}
+# STORAGES = {
+#      "staticfiles": {
+#      "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+#     },
+# }
 
 '''
 # Might need to pip install python-dotenv for this part
