@@ -28,9 +28,9 @@ STORAGES = {
     "default": {
         "BACKEND" : "storages.backends.azure_storage.AzureStorage",
     },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
+    # "staticfiles": {
+    #     "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    # },
 }
 
 '''
